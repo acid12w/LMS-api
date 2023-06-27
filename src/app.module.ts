@@ -15,8 +15,6 @@ import { UserCoursesModule } from './userCourses/usercourses.module';
 import { CommentController } from './comment/comment.controller';
 
 
-console.log("mongo URI:" +  process.env.API_KEY)
-
 @Module({
   imports: [
     MycourseModule,
