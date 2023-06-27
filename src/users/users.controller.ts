@@ -22,9 +22,8 @@ import { AuthService } from '../auth/auth.service';
 import { UsersService } from './users.service';
 
 import { UsersDto } from './dtos/create-users.dto';
-import { UpdateUserDto } from './dtos/Update-User.dto';
-import { UpdateUserCourseDto } from './dtos/update-user-course.dto';
-import { session } from 'passport';
+// import { UpdateUserDto } from './dtos/update-User.dto';
+
 
 @Controller('auth')
 export class UsersController {
@@ -74,7 +73,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('/edit/:currentUsername')  
-  async updateUser(@Param('currentUsername') currentUsername: string, @Body() body: UpdateUserDto) {
+  async updateUser(@Param('currentUsername') currentUsername: string, @Body() body) {
     return this.usersService.updateUser(currentUsername, body);   
   }
   
