@@ -28,13 +28,14 @@ export class CommentController {
     @Body() body: CreateCommenteDto, 
   ) {
     let result = await this.commentService.create(body.username, body.lessonId, body.text); 
-    const comment = this.lessonService.addComment({lessonId: body.lessonId, id: result._id})
+    await this.lessonService.addComment({lessonId: body.lessonId, id: result._id});
     return result;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   async getComment(@Param('id') id: string) {
+    console.log(id)
     return this.commentService.findById(id);
   }
 

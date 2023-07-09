@@ -34,14 +34,14 @@ export class CoursesController {
   @Get('/:id')
   async started(@Param('id')  id: string) {  
     const result = await this.coursesService.findById(id);  
+    
     return result;
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/instructor/:id')
   async getMycourses(@Param('id')  id: string) {
-    console.log(id);
-    const result = await this.coursesService.findByInstructorId(id);  
+    const result = await this.coursesService.findByInstructorId(id);    
     return result;
   }
   
@@ -49,7 +49,6 @@ export class CoursesController {
   @Roles('Instructor') 
   @Post('/create') 
   async create(@Body() body: CreateMyCourseDto, @Request() req){ 
-    
     body.instructorId  = req.user.sub;
     let result = await this.coursesService.create(body); 
     return result;

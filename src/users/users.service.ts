@@ -28,7 +28,7 @@ export class UsersService {
   }
 
   async findOne(email: string): Promise<any> {
-    const user = this.usersModel.findOne({ email: email });
+    const user = this.usersModel.findOne({ email: email }).populate("myCourses");
     return user;
   }
 
@@ -44,14 +44,13 @@ export class UsersService {
     return (await user).save();
   }
 
-  async updateMycourse(id, body) {
+  async updateMycourse(id, courseId) {
     const user = this.usersModel.findOneAndUpdate(  
-      { _id: id }, 
-      { $push: { myCourses:  { ...body }  } },
+      {_id: id},
+      { $push: { myCourses: courseId  }},
     ).exec();
-    return user;
+    return user;  
   }
-
 
   async updateUser(username: string, attrs: Partial<Users>) {   
     const user = await this.usersModel.findOne({ username: username }).exec();

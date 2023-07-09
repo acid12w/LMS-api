@@ -21,12 +21,12 @@ export class CoursesService {
   }
 
   async find() {
-    const course = await this.coursesModel.find({isPublished: true});
+    const course = await this.coursesModel.find({isPublished: true}).populate("lessons");  
     return course;
   }
 
   async findById(id: string) {
-    const course = await this.coursesModel.findById(id);
+    const course = await this.coursesModel.findById(id).populate("lessons");
     return course;
   }
 
@@ -36,7 +36,7 @@ export class CoursesService {
   }
 
   async findByInstructorId(id) {
-    const course = await this.coursesModel.find({ instructorId: id });
+    const course = await this.coursesModel.find({ instructorId: id });  
     return course;
   }
 
@@ -48,12 +48,12 @@ export class CoursesService {
     
   }
 
-
-  async update(id: string, title: number) {
-    return await this.coursesModel.findOneAndUpdate(
-      { _id: id },
-      { $push: { lessons: { title } } },
-    );
+  async update(id, lessonId) {
+  const result =  await this.coursesModel.findOneAndUpdate(
+    {_id: id},
+    { $push: { lessons: lessonId  }},
+  )
+    return result;
   }
 
   async removeCourse(id: string) {

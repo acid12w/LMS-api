@@ -1,7 +1,12 @@
 import { IsEmail } from 'class-validator';
 
-export class UsersDto {
+export class creatUsersDto {
     status: boolean;
-    currentCourse: number;
-    UserId: string;
+    thumbNail: string;
+    courseName: string;
+    currentLessons: number;
+    totalLessons: number;
+    completedLessons: number;
+    courseId: [];
+    userId: [];
 }

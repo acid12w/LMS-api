@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Courses } from '../courses/mycourses.schema';
+import { UserCourses } from 'src/userCourses/usercourses.schema';
 
 import { Exclude } from 'class-transformer';
 import { Role } from 'src/roles/role.enum';
@@ -32,8 +33,8 @@ export class Users {
   @Prop()
   roles: Role[];
 
-  @Prop()
-  myCourses: Courses[];
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserCourses' }] })
+  myCourses: UserCourses[];
 
   @Prop({ default: Date.now, immutable: true })
   createdDate?: Date;

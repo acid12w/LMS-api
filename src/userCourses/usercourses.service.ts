@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserCourses, UserCoursesDocument } from './usercourses.schema';
 
@@ -10,13 +10,15 @@ export class UserCoursesService {
         private userCoursesModel: Model<UserCoursesDocument>,
       ) {}
  
-  create(body: {}) {
-    const result  = new this.userCoursesModel({...body});
+  async create(body) {
+   const course = this.userCoursesModel.find ({userId : body.userId, courseId: body.courseId});
+   if((await course).length > 0) throw new BadRequestException('course already added');
+    const result  = new this.userCoursesModel({...body}); 
     return result.save()
   }
 
   findAll(id) {
-   const results = this.userCoursesModel.findOne({courseId : id});
+   const results = this.userCoursesModel.find({userId : id});
    return results;
   }
 

@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Users } from '../users/user.schema';
+import { Lesson } from 'src/lesson/lesson.schema';
 
 
 export type CoursesDocument = Courses & Document;
@@ -26,8 +27,8 @@ export class Courses {
   @Prop({ default: 0 })
   completedLessons: number;
 
-  @Prop()
-  lessons: any[];
+  @Prop({  type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Lesson'}] })
+  lessons: Lesson[];
 
   @Prop({ default: 0 })
   participants: number;

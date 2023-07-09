@@ -23,8 +23,8 @@ export class LessonController {
  
   @Post('/create')
   async create(@Body() body) {
-   this.mycoursesService.update(body.courseId, body.title);
    const lesson = await this.lessonService.create(body);
+   this.mycoursesService.update(body.courseId, lesson._id);
    return lesson;
   }
 

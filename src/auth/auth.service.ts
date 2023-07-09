@@ -48,7 +48,6 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(email);
 
-
     if (!user) return null;
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -87,7 +86,7 @@ export class AuthService {
         },
         {
           secret: 'secret',
-          expiresIn: '15m',
+          expiresIn: '5s',
         },
       ),
       this.jwtService.signAsync( 
@@ -109,7 +108,8 @@ export class AuthService {
       username,
       userId,
       bio,
-      myCourses
+      myCourses,
+      userRole
     };
   }
 
