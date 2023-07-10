@@ -26,7 +26,7 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://lms-59bg.onrender.com'],
+    origin: ['http://localhost:3000', 'https://lms-59bg.onrender.com'], 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',    
     credentials: true,
   });
