@@ -1,5 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { Cookie } from 'express-session';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -10,14 +11,13 @@ export class RoleGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());  
 
     if (!roles) {
           return true;
         }
-    
-    const request = context.switchToHttp().getRequest();  
-    const {user} = request.session;
-    return this.matchRoles(roles, user.roles[0]);
+
+    const request = context.switchToHttp().getRequest();    
+    return this.matchRoles(roles, request.cookies['access-token'].userRole[0]);
   }
 }

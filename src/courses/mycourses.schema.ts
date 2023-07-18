@@ -42,8 +42,8 @@ export class Courses {
   @Prop({ required: false })
   tags: [];
 
-  // @Prop({ required: true })
-  // thumbNail: string;
+  @Prop({ required: true })
+  thumbNail: string;
 
   @Prop({ default: true })
   imageFull: boolean;

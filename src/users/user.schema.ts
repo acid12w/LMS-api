@@ -30,7 +30,7 @@ export class Users {
   @Prop()
   bio: string;
 
-  @Prop()
+  @Prop({default: "student" })
   roles: Role[];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserCourses' }] })

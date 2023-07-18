@@ -47,10 +47,6 @@ export class UsersController {
   async login(@Request() req, @Res({ passthrough: true }) response, @Session() session) {   
     const token = await this.authService.login(req.user);  
       
-    session.user = {
-      roles : req.user.roles
-    }
-    
     response.cookie('access-token', token, { httpOnly: true });
 
     return token;
@@ -58,7 +54,8 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard) 
   @Post('/logout')
-  logout(@Request() req) {
+  logout(@Request() req) { 
+    console.log(req.user);
     this.authService.logout(req.user['sub']);  
   }
   

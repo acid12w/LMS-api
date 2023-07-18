@@ -12,7 +12,7 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [ 
     MongooseModule.forFeature([
-      { name: Courses.name, schema: CourseSchema },
+      { name: Courses.name, schema: CourseSchema }, 
     ]), 
     HttpModule
   ],

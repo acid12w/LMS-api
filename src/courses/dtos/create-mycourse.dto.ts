@@ -22,8 +22,8 @@ export class CreateMyCourseDto {
   // @IsNotEmpty()
   tags: any[];
 
-  // @IsNotEmpty()
-  // thumbNail: string;
+  @IsNotEmpty()
+  thumbNail: string;
 
   imageFull: boolean;
 
