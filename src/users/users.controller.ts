@@ -44,7 +44,7 @@ export class UsersController {
 
   @UseGuards(LocalAuthGuard) 
   @Post('/login')
-  async login(@Request() req, @Res({ passthrough: true }) response, @Session() session) {   
+  async login(@Request() req, @Res({ passthrough: true }) response) {   
     const token = await this.authService.login(req.user);  
       
     response.cookie('access-token', token, { httpOnly: true });
@@ -55,18 +55,13 @@ export class UsersController {
   @UseGuards(JwtAuthGuard) 
   @Post('/logout')
   logout(@Request() req) { 
-    console.log(req.user);
     this.authService.logout(req.user['sub']);  
   }
   
   @UseGuards(RefreshTokenGuard)
   @Get('/refresh')
   refreshTokens( @Request() req,
-  @Res({ passthrough: true }) res, ) {
-    // console.log(req?.cookies["access-token"])
-    // const userId = req.user['sub'];
-    // const refreshToken = req.user['refreshToken'];
-   
+  @Res({ passthrough: true }) res, ) {   
     res.cookie('access-token', req.user, { httpOnly: true }); 
     return req.user;
   }

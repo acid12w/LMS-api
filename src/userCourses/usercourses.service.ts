@@ -18,6 +18,7 @@ export class UserCoursesService {
   }
 
   findAll(id) {
+    if(id === "undefined") return;
    const results = this.userCoursesModel.find({userId : id});
    return results;
   }

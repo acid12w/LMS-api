@@ -86,9 +86,9 @@ export class AuthService {
         },
         {
           secret: 'secret',
-          expiresIn: '5s',
+          expiresIn: 60000 * 30,
         },
-      ),
+      ), 
       this.jwtService.signAsync( 
         {
           sub: userId,
@@ -97,7 +97,7 @@ export class AuthService {
         },
         {
           secret: 'secret',  
-          expiresIn: '100m',
+          expiresIn: 60000 * 60,
         },  
       ),
     ]);
