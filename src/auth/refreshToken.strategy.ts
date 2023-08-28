@@ -21,7 +21,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
               
               return data.refreshToken;
           }]),
-          ignoreExpiration: true,
+          ignoreExpiration: false,
           passReqToCallback:true,
           secretOrKey:'secret',
       })
@@ -29,21 +29,23 @@ export class RefreshTokenStrategy extends PassportStrategy(
   }
 
   async validate(req:Request, payload:any){
-
       if(!payload){
-          throw new BadRequestException('invalid jwt token');
+          throw new BadRequestException('invalid jwt token'); 
       }
+      
       let data = req?.cookies["access-token"];
       if(!data?.refreshToken){
           throw new BadRequestException('invalid refresh token');
       }
-      let user = await this.authService.refreshTokens(payload.sub, data.refreshToken);
+    
+      let user = await this.authService.refreshTokens(payload.sub, data.refreshToken);  
+   
 
       if(!user){
-          throw new BadRequestException('token expired');
+          throw new BadRequestException('token expired');   
       }
-
+      
       return user;
   }
 }
-
+ 

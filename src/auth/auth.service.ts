@@ -23,7 +23,6 @@ export class AuthService {
     password: string,
   ): Promise<any> {
     const users = await this.usersService.findOne(email);
-    console.log(users)
 
     if (users) {
       throw new BadRequestException('email in use');
@@ -65,7 +64,8 @@ export class AuthService {
   }
 
   async logout(userId: string) {
-    return this.usersService.update(userId, { refreshToken: null });
+    const result = await this.usersService.update(userId, { refreshToken: null });
+    return result;
   }
 
   async updateRefreshToken(userId: string, refreshToken: string) {
@@ -75,7 +75,7 @@ export class AuthService {
     });
   }
 
-  async getTokens(userId: string, username: string, userRole: [], bio: string, myCourses ) {
+  async getTokens(userId: string, username: string, userRole: [], bio: string, myCourses ) {  
    
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
@@ -86,18 +86,18 @@ export class AuthService {
         },
         {
           secret: 'secret',
-          expiresIn: 60000 * 30,
+          expiresIn: '15m',
         },
       ), 
-      this.jwtService.signAsync( 
+      this.jwtService.signAsync ( 
         {
           sub: userId,
           username,
           roles: userRole,
         },
         {
-          secret: 'secret',  
-          expiresIn: 60000 * 60,
+          secret: 'secret',   
+          expiresIn: '7d',
         },  
       ),
     ]);
@@ -115,16 +115,14 @@ export class AuthService {
 
   async refreshTokens(userId: string, refreshToken: string) {
     const user = await this.usersService.findById(userId);  
-    if (!user || !user.refreshToken)
-      throw new ForbiddenException('Access Denied');
-    const refreshTokenMatches = await bcrypt.compare(
-      refreshToken,
-      user.refreshToken,
-    );
-    if (!refreshTokenMatches)
-      throw new ForbiddenException('Access Denied token does not match');
+    
+    if (!user || !user.refreshToken) throw new BadRequestException('Access Denied'); 
+    const refreshTokenMatches = await bcrypt.compare(refreshToken, user.refreshToken);
+    if (!refreshTokenMatches)throw new ForbiddenException('Access Denied token does not match');
+  
     const tokens = await this.getTokens(user._id, user.username, user.roles, user.bio, user.myCourses);
-    await this.updateRefreshToken(user._id, tokens.refreshToken);
+    await this.updateRefreshToken(user._id, tokens.refreshToken);    
     return tokens;
-  }
+  }  
+
 }

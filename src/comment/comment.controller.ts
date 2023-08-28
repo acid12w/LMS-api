@@ -35,7 +35,6 @@ export class CommentController {
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   async getComment(@Param('id') id: string) {
-    console.log(id)
     return this.commentService.findById(id);
   }
 

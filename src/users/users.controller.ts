@@ -54,15 +54,15 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard) 
   @Post('/logout')
-  logout(@Request() req) { 
-    this.authService.logout(req.user['sub']);  
+  async logout(@Request() req) { 
+    const result = await this.authService.logout(req.user['sub']);  
   }
   
   @UseGuards(RefreshTokenGuard)
   @Get('/refresh')
   refreshTokens( @Request() req,
   @Res({ passthrough: true }) res, ) {   
-    res.cookie('access-token', req.user, { httpOnly: true }); 
+    res.cookie('access-token', req.user, { httpOnly: true });       
     return req.user;
   }
 
