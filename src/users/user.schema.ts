@@ -17,15 +17,15 @@ export class Users {
   @Prop({ required: true })
   email: string;
 
-  @Prop()
-  profileUrl: string;
+  @Prop({default: "https://i.ibb.co/hRkzGrC/31ebe7fe5765.webp"})
+  profileImage: string;
 
   @Prop({ required: true })  
   @Exclude()
   password: string;
 
   @Prop()
-  refreshToken?: string;
+  refreshToken: string;
 
   @Prop()
   bio: string;

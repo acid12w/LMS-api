@@ -35,9 +35,11 @@ export class AuthService {
     const tokens = await this.getTokens(
       newUser._id,
       newUser.username,
+      newUser.email,
       newUser.roles,
       newUser.bio,
-      newUser.myCourses
+      newUser.myCourses,
+      newUser.profileImage,
     );
     await this.updateRefreshToken(newUser._id, tokens.refreshToken);
     
@@ -54,11 +56,12 @@ export class AuthService {
     if (!isMatch) { 
       throw new BadRequestException('check credentials and try again'); 
     }
+   
     return user;
   }
 
   async login(user: any) {
-    const tokens = await this.getTokens(user._id, user.username, user.roles, user.bio, user.myCourses);
+    const tokens = await this.getTokens(user._id, user.username, user.email, user.roles, user.bio, user.myCourses, user.profileImage);
     await this.updateRefreshToken(user._id, tokens.refreshToken);
     return tokens;
   }
@@ -75,7 +78,7 @@ export class AuthService {
     });
   }
 
-  async getTokens(userId: string, username: string, userRole: [], bio: string, myCourses ) {  
+  async getTokens(userId: string, username: string, email: string, userRole: [], bio: string, myCourses: [], profileImage: string ) {  
    
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
@@ -106,10 +109,12 @@ export class AuthService {
       accessToken,
       refreshToken,
       username,
+      email,
       userId,
       bio,
       myCourses,
-      userRole
+      userRole,
+      profileImage
     };
   }
 
@@ -120,9 +125,9 @@ export class AuthService {
     const refreshTokenMatches = await bcrypt.compare(refreshToken, user.refreshToken);
     if (!refreshTokenMatches)throw new ForbiddenException('Access Denied token does not match');
   
-    const tokens = await this.getTokens(user._id, user.username, user.roles, user.bio, user.myCourses);
-    await this.updateRefreshToken(user._id, tokens.refreshToken);    
+    const tokens = await this.getTokens(user._id, user.username, user.email, user.roles, user.bio, user.myCourses, user.profileImage);  
+    await this.updateRefreshToken(user._id, tokens.refreshToken);     
     return tokens;
-  }  
+  }   
 
 }

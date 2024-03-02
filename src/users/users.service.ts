@@ -52,8 +52,8 @@ export class UsersService {
     return user;  
   }
 
-  async updateUser(username: string, attrs: Partial<Users>) {   
-    const user = await this.usersModel.findOne({ username: username }).exec();
+  async updateUser(email: string, attrs: Partial<Users>) {   
+    const user = await this.usersModel.findOne({ email: email }).exec();
     if (!user) throw new NotFoundException();  
     Object.assign(user, attrs);
     return (await user).save();  

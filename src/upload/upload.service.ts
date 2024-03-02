@@ -35,7 +35,10 @@ export class UploadService {
               }),
             ),
         );
-    
     return imageData;
+    }
+
+    async deleteCourseThumbnail(){
+      
     }
 }

@@ -11,6 +11,7 @@ export class UsersDto {
 
   bio: string;
   roles: [];
+  profileImage: string;
   myCourses: [];
   createdDate: Date;
   modifiedDate: Date;

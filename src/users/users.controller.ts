@@ -34,21 +34,20 @@ export class UsersController {
 
   @Post('/signup')
   async signup(@Body() body: UsersDto) {
+    console.log(body)
     const user = await this.authService.signup( 
       body.username,
-      body.email,
+      body.email, 
       body.password,
     );
-    return user;
+    return user; 
   }
-
-  @UseGuards(LocalAuthGuard) 
+ 
+  @UseGuards(LocalAuthGuard)  
   @Post('/login')
   async login(@Request() req, @Res({ passthrough: true }) response) {   
     const token = await this.authService.login(req.user);  
-      
     response.cookie('access-token', token, { httpOnly: true });
-
     return token;
   }
 
@@ -65,16 +64,16 @@ export class UsersController {
     res.cookie('access-token', req.user, { httpOnly: true });       
     return req.user;
   }
-
+ 
   @UseGuards(JwtAuthGuard)
-  @Patch('/edit/:currentUsername')  
-  async updateUser(@Param('currentUsername') currentUsername: string, @Body() body) {
-    return this.usersService.updateUser(currentUsername, body);   
+  @Patch('/edit/:email')  
+  async updateUser(@Param('email') email: string, @Body() body) {         
+    return this.usersService.updateUser(email, body);            
   }
   
   @Patch('/mycourses/:currentUsername')
   async updateMycourse(@Param('currentUsername') currentUsername: string,  @Body() body ){
-    const result = this.usersService.updateMycourse(currentUsername, body)
+    const result = this.usersService.updateMycourse(currentUsername, body) 
     return  result
   }
 
