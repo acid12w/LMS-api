@@ -13,6 +13,7 @@ import { LessonModule } from './lesson/lesson.module';
 import { UploadModule } from './upload/upload.module';
 import { UserCoursesModule } from './userCourses/usercourses.module';
 import { CommentController } from './comment/comment.controller';
+import { ChatGatewayModule } from './chat/chat.gateway.module';
 
 
 @Module({
@@ -30,8 +31,9 @@ import { CommentController } from './comment/comment.controller';
     AuthModule,
     LessonModule,
     UploadModule,
+    ChatGatewayModule,
   ],
   controllers: [AppController, UsersController, CommentController],
-  providers: [AppService],
+  providers: [AppService, ],
 })
 export class AppModule {}

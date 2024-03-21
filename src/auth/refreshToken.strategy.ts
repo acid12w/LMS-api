@@ -14,7 +14,8 @@ export class RefreshTokenStrategy extends PassportStrategy(
       super({
          
           jwtFromRequest:ExtractJwt.fromExtractors([(request:Request) => {
-              let data = request?.cookies['access-token'];
+              let data = request?.cookies['access-token'];  
+            
               if(!data){
                   return null;
               }
@@ -29,11 +30,14 @@ export class RefreshTokenStrategy extends PassportStrategy(
   }
 
   async validate(req:Request, payload:any){
+
       if(!payload){
           throw new BadRequestException('invalid jwt token'); 
       }
       
       let data = req?.cookies["access-token"];
+
+     
       if(!data?.refreshToken){
           throw new BadRequestException('invalid refresh token');
       }

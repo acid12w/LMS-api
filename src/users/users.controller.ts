@@ -34,7 +34,6 @@ export class UsersController {
 
   @Post('/signup')
   async signup(@Body() body: UsersDto) {
-    console.log(body)
     const user = await this.authService.signup( 
       body.username,
       body.email, 
@@ -46,9 +45,10 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)  
   @Post('/login')
   async login(@Request() req, @Res({ passthrough: true }) response) {   
-    const token = await this.authService.login(req.user);  
-    response.cookie('access-token', token, { httpOnly: true });
-    return token;
+    const user = await this.authService.login(req.user); 
+    const {accessToken, refreshToken, userRole} = user; 
+    response.cookie('access-token', {accessToken, refreshToken, userRole}, { httpOnly: true });  
+    return user;
   }
 
   @UseGuards(JwtAuthGuard) 
@@ -61,7 +61,7 @@ export class UsersController {
   @Get('/refresh')
   refreshTokens( @Request() req,
   @Res({ passthrough: true }) res, ) {   
-    res.cookie('access-token', req.user, { httpOnly: true });       
+    res.cookie('access-token', req.user, { httpOnly: true });   
     return req.user;
   }
  

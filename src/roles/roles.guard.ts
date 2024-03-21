@@ -6,8 +6,8 @@ import { Cookie } from 'express-session';
 export class RoleGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
-  matchRoles(roles: string[], userRole: string) {
-    return roles.some((role) => role === userRole);  
+  matchRoles(roles: string[], userRole: string[]) {
+    return userRole.includes(roles[0])
   }
 
   canActivate(context: ExecutionContext): boolean {

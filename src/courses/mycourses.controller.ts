@@ -44,11 +44,10 @@ export class CoursesController {
     return result;
   }
   
-  @UseGuards(JwtAuthGuard)  
+  @UseGuards(JwtAuthGuard, RoleGuard)  
   @Roles('instructor') 
   @Post('/create')
   async create(@Body() body: CreateMyCourseDto, @Request() req){ 
-    console.log(body)
     body.instructorId  = req.user.sub;
     let result = await this.coursesService.create(body); 
     console.log(result);
@@ -67,7 +66,6 @@ export class CoursesController {
   @Roles('instructor')
   @Delete('delete/:id')
   async remove(@Param('id') id: string) { 
-    console.log(id)
     const result = await this.coursesService.removeCourse(id); 
     return result;
   }

@@ -17,7 +17,7 @@ import { LessonService } from '../lesson/lesson.service';
 
 @Controller('comment')
 export class CommentController {
-  constructor(
+  constructor( 
     private readonly lessonService: LessonService,
     private readonly commentService: CommentService,
     ) {}
