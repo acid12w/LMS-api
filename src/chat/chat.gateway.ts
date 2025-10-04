@@ -1,4 +1,4 @@
-import { Logger } from "@nestjs/common";
+import { Logger, UseFilters, UsePipes, ValidationPipe } from "@nestjs/common";
 import {
   ConnectedSocket,
   MessageBody,
@@ -9,16 +9,22 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from "@nestjs/websockets";
+import { WebsocketExceptionFilter } from "./wsExceptionFilter";
 
 import { Server, Socket } from "socket.io";
+import { CreateMessageDtos } from "./dtos/ceate-message.dto";
+
+
+let participants = [];
 
 @WebSocketGateway({
   cors: {
     origin: ['http://localhost:3000']
   }
 })
+@UseFilters(new WebsocketExceptionFilter())
 export class ChatGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect  
 {
   private readonly logger = new Logger(ChatGateway.name);
 
@@ -36,21 +42,35 @@ export class ChatGateway
   }
 
   handleDisconnect(client: any) {
-    this.logger.log(`Cliend id:${client.id} disconnected`);
+    this.logger.log(`Cliend id:${client.id} disconnected`); 
   }
-
+  
+  
   @SubscribeMessage("message")
-  handleEvent(@MessageBody() message: any): any {          
-    console.log(message)
-    this.io.to("room1").emit('message', {
+  @UsePipes(new ValidationPipe())
+  handleEvent(@MessageBody() message: CreateMessageDtos): any {          
+    this.io.to(message.roomID).emit('message', {
           msg: 'message',
           content: message,
       });
     }
   @SubscribeMessage("join")
-  joinRoom(@MessageBody() roomid: string,
+  joinRoom(@MessageBody() room: any,
       @ConnectedSocket() client: Socket,) {
-        console.log(roomid)
-        client.join(roomid)     
+        participants.push(room)
+        const roomID = room.roomID
+        client.join(roomID); 
+        this.io.to(roomID).emit('participants', participants)  
     }
-  } 
+
+    @SubscribeMessage("leave")
+    leaveRoom(@MessageBody() room: any,
+        @ConnectedSocket() client: Socket,) {
+          participants = participants.filter(el => el.name !== room.name);
+      }
+    } 
+  
+
+ 
+
+  

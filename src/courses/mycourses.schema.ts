@@ -54,6 +54,9 @@ export class Courses {
   @Prop({ default: false })
   isFeatured: boolean;
 
+  @Prop({ default: false })
+  index: number;
+
   @Prop({ default: Date.now, immutable: true })
   createdDate?: Date;
 

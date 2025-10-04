@@ -42,10 +42,10 @@ export class CoursesService {
 
   async updateCourse(id: string, attrs: Partial<Courses>) {
     const course = await this.coursesModel.findById(id);
+    console.log(attrs);
     if (!course) throw new NotFoundException('course not found');
     Object.assign(course, attrs);
     return (await course).save();
-    
   }
 
   async update(id, lessonId) {

@@ -4,7 +4,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { Users, UsersSchema } from './user.schema';
 import { AuthService } from 'src/auth/auth.service';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService } from "@nestjs/jwt";
 // import { RoleGuard } from 'src/roles/roles.guard';
 
 @Module({

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Delete, Param, Get } from '@nestjs/common';
+import { Body, Controller, Post, Delete, Param, Get, Patch } from '@nestjs/common';
 import { LessonService } from './lesson.service';
 import { CoursesService } from '../courses/mycourses.service';
 
@@ -10,8 +10,14 @@ export class LessonController {
   ) {}
 
   @Get('/:id')
-  async get(@Param('id') id: string){ 
+  async getLesson(@Param('id') id: string){ 
     const lesson = await this.lessonService.getLessonById(id);
+    return lesson;
+  }
+
+  @Get('/course/:courseId')
+  async get(@Param('courseId') courseId: string){ 
+    const lesson = await this.lessonService.getLessonByCourseId(courseId);
     return lesson;
   }
 
@@ -26,6 +32,12 @@ export class LessonController {
    const lesson = await this.lessonService.create(body);
    this.mycoursesService.update(body.courseId, lesson._id);
    return lesson;
+  }
+
+  @Patch('/edit/:id')
+    async update(@Param('id') id: string, @Body() body) {
+      const result = await this.lessonService.updateLesson(id, body);
+      return result;
   }
 
 

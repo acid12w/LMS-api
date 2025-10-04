@@ -11,10 +11,10 @@ export class Lesson {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: true })
+  @Prop()
   resource: string;
 
-  @Prop({ required: true })
+  @Prop()
   videoId: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })

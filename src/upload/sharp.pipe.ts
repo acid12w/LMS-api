@@ -11,7 +11,7 @@ export class SharpPipe implements PipeTransform<Express.Multer.File, Promise<any
 
     try{
         const newImage = await sharp(image.buffer)
-        .resize(1920,1350)
+        .resize(2350,1450)
         .webp({ effort: 3 })
         .toBuffer()
         // .toFile(path.join('uploads', filename));

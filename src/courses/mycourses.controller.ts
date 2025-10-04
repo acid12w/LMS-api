@@ -50,15 +50,15 @@ export class CoursesController {
   async create(@Body() body: CreateMyCourseDto, @Request() req){ 
     body.instructorId  = req.user.sub;
     let result = await this.coursesService.create(body); 
-    console.log(result);
     return result;
-  }
+  } 
 
   @UseGuards(JwtAuthGuard, RoleGuard)  
   @Roles('instructor')
-  @Patch('edit/:id')
+  @Patch('edit/:id') 
   async update(@Param('id') id: string, @Body() body) {
-    const result = await this.coursesService.updateCourse(id, body);
+    console.log(body);
+    const result = await this.coursesService.updateCourse(id, body); 
     return result;
   }
 

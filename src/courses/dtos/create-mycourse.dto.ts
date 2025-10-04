@@ -19,7 +19,7 @@ export class CreateMyCourseDto {
 
   rating: number;
 
-  // @IsNotEmpty()
+  @IsNotEmpty()
   tags: any[];
 
   @IsNotEmpty()
